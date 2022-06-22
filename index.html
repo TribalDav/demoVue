@@ -17,13 +17,15 @@
         <p v-if="seen">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nam cum, veniam debitis nobis culpa et illo distinctio placeat laboriosam libero eos alias rem ex id facilis iure! At, dolore.</p>  <!-- de la même manière que précédemment, ici le paragraphe n'apparaitra dans le DOM que si la propriété seen est à true-->
         <button v-on:click="ninja">{{ seen ? 'Disparition' : 'Apparition' }}</button><!-- déclenche une méthode à la détection d'un évenement. Tous les évenements javascript sont disponibles. On rapelle simplement le nom de la fonction qu'on veut lancer à la détection de l'évenement -->
         <ul>
+            <!-- On peut boucler sur les éléments d'une propriété parcourable avec la directive v-for -->
             <Stagiaire 
                 v-for="stagiaire in dwwm" 
                 v-bind:prenom="stagiaire" 
                 v-bind:key="index"
                 v-on:askToSuppress="suppress"
             />
-           
+           <!-- On écoute l'évenement émis par l'enfant (askToSuppress) pour déclencher la fonction suppress au niveau du parent  -->
+
             <!--    <li v-for="elem in dwwm">{{ elem }}</li>     -->   <!-- On peut boucler sur les éléments d'une propriété parcourable avec la directive v-for -->
         </ul>
         <button v-on:click="suppress('Julien P')">Supprimer</button>
@@ -39,7 +41,8 @@
         import Stagiaire from './Stagiaire.js'
 
         //on définie cette instance
-        createApp({
+        createApp({            //elle utilisera un composant Stagiaire défini dans le fichier éponyme, importé au niveau de l'instance grâce à import (qui nécessite qu'on donne le type "module" à la balise script) et enregistré dans une clé components également au niveau de l'instance
+
             //elle contiendra une propriété data (qui est une fonction mais c'est pas grave)
 
             components: {
