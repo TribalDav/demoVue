@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DemoVue</title>
+</head>
+<body>
+
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <div id="app">
+        <p>{{ message }}</p>      <!-- rendu déclaratif-->
+        <p v-html="message"></p>  <!-- directive pour interpréter le html -->
+        <button v-bind:disabled="isDisabled">Clique moi !</button><!-- la directive v-bind sert à attacher la valeur d'un attribut à une propriété de l'objet data-->
+        <p v-if="seen">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam nam cum, veniam debitis nobis culpa et illo distinctio placeat laboriosam libero eos alias rem ex id facilis iure! At, dolore.</p>  <!-- de la même manière que précédemment, ici le paragraphe n'apparaitra dans le DOM que si la propriété seen est à true-->
+        <button v-on:click="ninja">{{ seen ? 'Disparition' : 'Apparition' }}</button><!-- déclenche une méthode à la détection d'un évenement. Tous les évenements javascript sont disponibles. On rapelle simplement le nom de la fonction qu'on veut lancer à la détection de l'évenement -->
+        <ul>
+            <Stagiaire 
+                v-for="stagiaire in dwwm" 
+                v-bind:prenom="stagiaire" 
+                v-bind:key="index"
+                v-on:askToSuppress="suppress"
+            />
+           
+            <!--    <li v-for="elem in dwwm">{{ elem }}</li>     -->   <!-- On peut boucler sur les éléments d'une propriété parcourable avec la directive v-for -->
+        </ul>
+        <button v-on:click="suppress('Julien P')">Supprimer</button>
+        <input v-model="message" type="text">          <!-- la directive v-model permet d'établir une liaison dans les 2 sens entre la saisie d'un utilisateur et la valeur de la propriété correspondante dans l'instance de Vue -->
+
+
+    </div>
+
+    <script type="module">
+        //on crée une instance de Vue
+        const { createApp } = Vue
+
+        import Stagiaire from './Stagiaire.js'
+
+        //on définie cette instance
+        createApp({
+            //elle contiendra une propriété data (qui est une fonction mais c'est pas grave)
+
+            components: {
+                Stagiaire
+            },  //on définit la propriété data de la vue (Stagiaire.js)
+                
+    data() {
+      return {
+        message: '<strong>Hello Vue!</strong>',
+        isDisabled: false, 
+        seen: true,
+        dwwm: ['Halima', 'Pati', 'David', 'Davy', 'Alex', 'Melvin', 'Julien P', 'Julien S', 'Kevin', 'Sylvain' ]
+      }
+    },
+    methods: { // l'objet methods nous permet de définir des fonctions pour notre instance de Vue
+      ninja() {
+        this.seen = !this.seen // la fonction modifie la propriété seen par son inverse
+      },
+
+      suppress(prenom) {
+        let index = this.dwwm.indexOf(prenom)
+        this.dwwm.splice(index, 1)
+      }
+    }
+  }).mount('#app') //on monte l'application dans la div #app
+</script>
+</body>
+</html>
